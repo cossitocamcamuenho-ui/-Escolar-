@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123a72">
+  <title>Conecta Escola</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Conecta Escola início">
+      <span class="brand-mark">CE</span>
+      <span>Conecta <b>Escola</b></span>
+    </a>
+    <div id="header-user" class="header-user hidden">
+      <span id="header-name"></span>
+      <button id="logout-btn" class="button button-light button-small">Sair</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section id="auth-view" class="auth-layout">
+      <div class="welcome-panel">
+        <div class="welcome-icon">✦</div>
+        <p class="eyebrow">A TUA COMUNIDADE ESCOLAR</p>
+        <h1>Aprender e comunicar fica mais fácil quando estamos conectados.</h1>
+        <p>Conversa com colegas, participa nas turmas e partilha ideias num espaço escolar.</p>
+        <div class="feature-list">
+          <span>✓ Mensagens privadas</span>
+          <span>✓ Grupos de turmas</span>
+          <span>✓ Perfil de aluno</span>
+        </div>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button id="show-login" class="auth-tab active" type="button">Entrar</button>
+          <button id="show-register" class="auth-tab" type="button">Criar conta</button>
+        </div>
+        <form id="login-form" class="form-stack">
+          <h2>Bem-vindo de volta</h2>
+          <p class="muted">Entra na tua conta escolar.</p>
+          <label for="login-email">E-mail</label>
+          <input id="login-email" type="email" autocomplete="email" placeholder="aluno@exemplo.com" required>
+          <label for="login-password">Senha</label>
+          <input id="login-password" type="password" autocomplete="current-password" placeholder="A tua senha" required minlength="6">
+          <button class="button button-primary" type="submit">Entrar</button>
+          <p id="login-error" class="error-message" role="alert"></p>
+        </form>
+
+        <form id="register-form" class="form-stack hidden">
+          <h2>Cria a tua conta</h2>
+          <p class="muted">Usa o teu e-mail e os teus dados escolares.</p>
+          <label for="register-name">Nome completo</label>
+          <input id="register-name" type="text" autocomplete="name" placeholder="O teu nome" required maxlength="60">
+          <label for="register-email">E-mail</label>
+          <input id="register-email" type="email" autocomplete="email" placeholder="aluno@exemplo.com" required>
+          <label for="register-password">Criar senha</label>
+          <input id="register-password" type="password" autocomplete="new-password" placeholder="Pelo menos 6 caracteres" required minlength="6">
+          <label for="register-role">Tipo de conta</label>
+          <select id="register-role"><option value="student">Aluno</option><option value="school">Escola</option></select>
+          <div id="student-fields"><label for="register-class">Turma (opcional)</label>
+          <input id="register-class" type="text" placeholder="Ex.: 11.2I" maxlength="30">
+          <label for="register-school-code">Código da escola</label><input id="register-school-code" type="text" placeholder="Código fornecido pela escola" maxlength="20"></div>
+          <div id="school-fields" class="hidden"><label for="register-school-name">Nome da escola</label><input id="register-school-name" type="text" placeholder="Nome oficial da escola" maxlength="100"></div>
+          <button class="button button-primary" type="submit">Criar conta</button>
+          <p id="register-error" class="error-message" role="alert"></p>
+          <p class="tiny-note">Não uses uma senha que já utilizas noutros serviços. Partilha dados pessoais apenas com pessoas em quem confias.</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="app-view" class="app-layout hidden">
+      <aside class="sidebar">
+        <div class="sidebar-profile">
+          <div id="sidebar-avatar" class="avatar avatar-large">A</div>
+          <div class="profile-text">
+            <strong id="sidebar-name">Aluno</strong>
+            <span id="sidebar-class">Sem turma definida</span>
+          </div>
+        </div>
+        <nav class="nav-list" aria-label="Navegação principal">
+          <button class="nav-item active" data-view="people" type="button"><span>♧</span> Alunos</button>
+          <button class="nav-item" data-view="feed" type="button"><span>▤</span> Publicações</button>
+          <button class="nav-item" data-view="news" type="button"><span>◉</span> Notícias</button>
+          <button class="nav-item" data-view="lessons" type="button"><span>▣</span> Aulas</button>
+          <button class="nav-item" data-view="staff" type="button"><span>♙</span> Funcionários</button>
+          <button class="nav-item" data-view="chats" type="button"><span>✉</span> Mensagens <span id="chat-count" class="nav-count">0</span></button>
+          <button class="nav-item" data-view="classes" type="button"><span>▦</span> Turmas</button>
+          <button class="nav-item" data-view="profile" type="button"><span>◎</span> O meu perfil</button>
+        </nav>
+        <div class="sidebar-footer">Conecta Escola <span>• Comunidade escolar</span></div>
+      </aside>
+
+      <section class="content-panel">
+        <div id="notice" class="notice hidden" role="status"></div>
+
+        <section id="view-people" class="content-view">
+          <div class="section-heading">
+            <div><p class="eyebrow">COMUNIDADE</p><h1>Alunos</h1><p class="muted">Encontra colegas e começa uma conversa privada.</p></div>
+          </div>
+          <label class="search-box"><span>⌕</span><input id="people-search" type="search" placeholder="Procurar por nome ou turma..."></label>
+          <div id="people-list" class="people-grid"><div class="empty-state">A carregar alunos...</div></div>
+        </section>
+
+        <section id="view-feed" class="content-view hidden">
+          <div class="section-heading"><div><p class="eyebrow">COMUNIDADE DA ESCOLA</p><h1>Publicações</h1><p class="muted">Partilha ideias e comenta as publicações dos colegas.</p></div></div>
+          <form id="post-form" class="profile-form"><textarea id="post-text" rows="3" maxlength="1500" placeholder="O que queres partilhar com a tua escola?" required></textarea><button class="button button-primary" type="submit">Publicar</button></form>
+          <div id="posts-list" class="feed-list"></div>
+        </section>
+        <section id="view-news" class="content-view hidden">
+          <div class="section-heading"><div><p class="eyebrow">COMUNICADOS</p><h1>Notícias da escola</h1><p class="muted">Cada escola tem notícias privadas do seu próprio espaço.</p></div></div>
+          <form id="news-form" class="profile-form school-only"><input id="news-title" maxlength="120" placeholder="Título da notícia" required><textarea id="news-body" rows="3" maxlength="2000" placeholder="Escreve o comunicado" required></textarea><button class="button button-primary" type="submit">Publicar notícia</button></form>
+          <div id="news-list" class="feed-list"></div>
+        </section>
+        <section id="view-lessons" class="content-view hidden">
+          <div class="section-heading"><div><p class="eyebrow">APRENDIZAGEM</p><h1>Aulas dos professores</h1><p class="muted">Aulas, disciplinas e materiais partilhados pela escola.</p></div></div>
+          <form id="lesson-form" class="profile-form staff-only"><input id="lesson-title" maxlength="120" placeholder="Título da aula" required><input id="lesson-subject" maxlength="80" placeholder="Disciplina" required><input id="lesson-teacher" maxlength="100" placeholder="Nome do professor" required><textarea id="lesson-body" rows="4" maxlength="3000" placeholder="Conteúdo ou orientação da aula" required></textarea><button class="button button-primary" type="submit">Publicar aula</button></form>
+          <div id="lessons-list" class="feed-list"></div>
+        </section>
+        <section id="view-staff" class="content-view hidden">
+          <div class="section-heading"><div><p class="eyebrow">A NOSSA ESCOLA</p><h1>Funcionários</h1><p class="muted">Direção, professores, secretariado e restantes trabalhadores.</p></div></div>
+          <form id="staff-form" class="profile-form school-only"><input id="staff-name" maxlength="100" placeholder="Nome completo" required><select id="staff-role"><option>Diretor(a)</option><option>Professor(a)</option><option>Secretário(a)</option><option>Funcionário(a) de limpeza</option><option>Guarda</option><option>Funcionário(a) da cantina</option><option>Outro funcionário</option></select><input id="staff-subject" maxlength="80" placeholder="Disciplina / função (opcional)"><button class="button button-primary" type="submit">Adicionar funcionário</button></form>
+          <div id="staff-list" class="people-grid"></div>
+        </section>
+        <section id="view-chats" class="content-view hidden">
+          <div class="section-heading"><div><p class="eyebrow">CONVERSAS</p><h1>Mensagens</h1><p class="muted">As mensagens são atualizadas em tempo real.</p></div></div>
+          <div class="chat-layout">
+            <div class="chat-list-panel"><h3>As tuas conversas</h3><div id="chat-list"><div class="empty-state">Ainda não tens conversas.</div></div></div>
+            <div id="chat-room" class="chat-room">
+              <div class="chat-placeholder"><div class="placeholder-icon">✉</div><h2>Escolhe uma conversa</h2><p>Seleciona um colega na lista de alunos para começar.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-classes" class="content-view hidden">
+          <div class="section-heading"><div><p class="eyebrow">APRENDIZAGEM EM GRUPO</p><h1>Turmas</h1><p class="muted">Cria uma turma ou participa num grupo existente.</p></div></div>
+          <form id="create-class-form" class="inline-form">
+            <input id="new-class-name" type="text" placeholder="Nome da turma (ex.: 11.2I)" required maxlength="50">
+            <input id="new-class-description" type="text" placeholder="Descrição (opcional)" maxlength="120">
+            <button class="button button-primary" type="submit">+ Criar turma</button>
+          </form>
+          <div id="classes-list" class="class-grid"><div class="empty-state">A carregar turmas...</div></div>
+          <div id="class-room" class="class-room hidden"></div>
+        </section>
+
+        <section id="view-profile" class="content-view hidden">
+          <div class="section-heading"><div><p class="eyebrow">A TUA CONTA</p><h1>O meu perfil</h1><p class="muted">Mantém as tuas informações atualizadas.</p></div></div>
+          <form id="profile-form" class="profile-form">
+            <div class="profile-preview"><div id="profile-avatar" class="avatar avatar-xl">A</div><div><h2 id="profile-preview-name">Aluno</h2><p id="profile-preview-email" class="muted"></p></div></div>
+            <label for="profile-photo">Fotografia real do perfil</label><input id="profile-photo" type="file" accept="image/*"><p class="tiny-note">Escolhe uma fotografia tua. A imagem será reduzida antes de ser guardada.</p>
+            <label for="profile-name">Nome de apresentação</label>
+            <input id="profile-name" type="text" maxlength="60" required>
+            <label for="profile-class">Turma</label>
+            <input id="profile-class" type="text" maxlength="30" placeholder="Ex.: 11.2I">
+            <label for="profile-bio">Descrição</label>
+            <textarea id="profile-bio" rows="4" maxlength="180" placeholder="Escreve algo sobre ti (sem dados pessoais sensíveis)."></textarea>
+            <button class="button button-primary" type="submit">Guardar perfil</button>
+            <p id="profile-error" class="error-message" role="alert"></p>
+          </form>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <footer class="page-footer">Conecta Escola · Usa a rede com respeito e protege a tua privacidade.</footer>
+  <div id="toast" class="toast hidden" role="status"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
